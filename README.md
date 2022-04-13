@@ -8,4 +8,6 @@ mysql 5.7
 
 Après avoir clôné ce repository, modifiez le fichier .env et remplacer la ligne ci-dessous par votre accès à la base de données
 
-
+```yml
+DATABASE_URL=mysql://root:@127.0.0.1:3306/api-exercice
+```
