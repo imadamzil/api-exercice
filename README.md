@@ -30,14 +30,11 @@ $  php bin/console doctrine:migrations:migrate
 
 
 ```
-
-```powershell
-$ php bin/console doctrine:fixtures:load --append
-```
 Générez les fixtures
 
 ```powershell
 $ php bin/console doctrine:fixtures:load --append
+$ php bin/console doctrine:fixtures:load --env=test
 ```
 run tests 
 ```powershell
