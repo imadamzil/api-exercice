@@ -45,8 +45,8 @@ class AppFixtures extends Fixture
         for ($g = 0; $g < mt_rand(2, 3); $g++) {
 
             $group = new Group();
-            $group->setName("groupe_.$g");
-            $group->setDescription($faker->realText(mt_rand(200, 240)));
+            $group->setName("groupe_$g");
+            $group->setDescription($faker->realText(mt_rand(60, 100)));
 
             $manager->persist($group);
         // creation des users

@@ -2,14 +2,23 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ApiResource(
+ *     collectionOperations={"get", "post"},
+ *     itemOperations={"get", "put","delete"},
+ * normalizationContext={"groups"={"users_read"}}
+ * )
  */
 class User implements UserInterface
 {
@@ -17,16 +26,21 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"groups_read", "users_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"groups_read", "users_read"})
+     * @Assert\Email()
+
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"groups_read", "users_read"})
      */
     private $roles = [];
 
@@ -38,31 +52,43 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"groups_read", "users_read"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"groups_read", "users_read"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"groups_read", "users_read"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"groups_read", "users_read"})
+     * @Assert\Range(
+     *      min = 18,
+     *      max = 100,
+     *      minMessage = "l age doit etre logique",
+     *      maxMessage = "l'age doit etre logique"
+     * )
      */
     private $age;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"groups_read", "users_read"})
      */
     private $type;
 
     /**
      * @ORM\ManyToMany(targetEntity=Group::class, inversedBy="users")
+     * @Groups({"groups_read", "users_read"})
      */
     private $groups;
 
@@ -71,7 +97,7 @@ class User implements UserInterface
         $this->groups = new ArrayCollection();
     }
 
-  
+
 
 
     public function getId(): ?int
@@ -238,6 +264,4 @@ class User implements UserInterface
 
         return $this;
     }
-
-   
 }
